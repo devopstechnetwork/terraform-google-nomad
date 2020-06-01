@@ -27,10 +27,10 @@ terraform {
 # DEPLOY THE NOMAD SERVER NODES
 # Note that we use the consul-cluster module to deploy both the Nomad and Consul nodes on the same servers
 # ---------------------------------------------------------------------------------------------------------------------
-
-module "nomad_and_consul_servers" {
-  source = "git::git@github.com:hashicorp/terraform-google-consul.git//modules/consul-cluster?ref=v0.4.0"
-
+module "consul" {
+  source  = "app.terraform.io/HashiCorp-Sam/consul/google"
+  version = "0.4.0"
+  
   gcp_project_id = var.gcp_project
   gcp_region = var.gcp_region
 
