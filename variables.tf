@@ -52,7 +52,7 @@ variable "nomad_client_source_image" {
 variable "nomad_consul_server_cluster_size" {
   description = "The number of nodes to have in the Nomad Server cluster. We strongly recommended that you use either 3 or 5."
   type        = number
-  default     = 3
+  default     = 1
 }
 
 variable "nomad_consul_server_cluster_machine_type" {
@@ -66,7 +66,7 @@ variable "nomad_consul_server_cluster_machine_type" {
 variable "nomad_client_cluster_size" {
   description = "The number of nodes to have in the Nomad client cluster. This number is arbitrary."
   type        = number
-  default     = 3
+  default     = 1
 }
 
 variable "nomad_client_machine_type" {
