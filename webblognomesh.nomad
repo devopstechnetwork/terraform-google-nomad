@@ -20,7 +20,7 @@ job "webblognomesh" {
 
       env = {
         "MONGO_INITDB_ROOT_USERNAME" = "root",
-        "MONGO_INITDB_ROOT_PASSWORD" = "abcd1234"
+        "MONGO_INITDB_ROOT_PASSWORD" = "GGhJxUpAB23"
       }
 
       config {
@@ -45,8 +45,6 @@ job "webblognomesh" {
 
     }
 
-
-
     task "frontendTask" {
       driver = "docker"
       
@@ -55,7 +53,7 @@ job "webblognomesh" {
       }
 
       config {
-        image = "registry.gitlab.com/public-projects3/web-blog-demo:nomad-latest"
+        image = "samgabrail/webblog-nomad-demo:latest"
         port_map {
           http = 80
         }

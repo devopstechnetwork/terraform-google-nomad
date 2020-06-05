@@ -14,23 +14,23 @@ class Database(object):
     PORT = env('DB_PORT')
     VAULT_URL = env('VAULT_URL')
     # Uncomment USER and PASSWORD below to grab creds from .env file
-    USER = env('DB_USER')
-    PASSWORD = env('DB_PASSWORD')
+    # USER = env('DB_USER')
+    # PASSWORD = env('DB_PASSWORD')
     # Uncomment USER and PASSWORD below to show Vault's functionality
-    # USER = None
-    # PASSWORD = None
+    USER = None
+    PASSWORD = None
     URI = ''
     DATABASE = None
 
     @staticmethod
     def getDynamicSecret_API(vault_token):
-        response = requests.get(f'{Database.VAULT_URL}/v1/mongodb/creds/mongodb-role',
+        response = requests.get(f'{Database.VAULT_URL}/v1/mongodb_nomad/creds/mongodb-nomad-role',
         params={'q': 'requests+language:python'},
         headers={'X-Vault-Token': vault_token},
         )
         json_response = response.json()
-        # print(f'response is:')
-        # print(json_response)
+        print(f'response is:')
+        print(json_response)
         Database.USER = json_response['data']['username']
         Database.PASSWORD = json_response['data']['password']
 
@@ -56,8 +56,8 @@ class Database(object):
         # print('Initializing Database using Static Injected Secrets from Vault')
         # Database.buildURI_Injected_StaticKVsecrets()
         # Uncomment the 2 lines below to show Vault grabbing Dynamic secrets by utilizing an injected Vault token by the K8s injector
-        # print('Initializing Database using Dynamic Secrets from Vault')
-        # Database.buildURI_Injected_DynamicSecrets()
+        print('Initializing Database using Dynamic Secrets from Vault')
+        Database.buildURI_Injected_DynamicSecrets()
         Database.URI = f'mongodb://{Database.USER}:{Database.PASSWORD}@{Database.SERVER}:{Database.PORT}'
         print(f'Server: {Database.SERVER} and PORT: {Database.PORT} and user: {Database.USER} and password: {Database.PASSWORD}')
         client = pymongo.MongoClient(Database.URI)
