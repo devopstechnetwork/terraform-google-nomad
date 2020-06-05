@@ -32,6 +32,29 @@ sudo mkdir -p /opt/cni/bin
 sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
 ```
 
+- Nomad Servers need a Vault config. I used the root vault token for ease:
+```shell
+vault {
+  enabled = true
+  address = "http://vault.hashidemos.tekanaid.com:8200"
+  token = "xxxxx" 
+}
+```
+
+- Nomad Clients need a Vault config:
+```shell
+vault {
+  enabled = true
+  address = "http://vault.hashidemos.tekanaid.com:8200"
+}
+```
+
+- Pay attention to extra firewall ports that will need to be opened in GCP. Below is a list for applications specifically
+tcp:8080
+tcp:9002
+tcp:8000
+tcp:27017 to allow mongodb to be accessed by Vault
+
 ## Troubleshooting
 
 Good guide:
