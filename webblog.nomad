@@ -83,9 +83,13 @@ job "webblog" {
 
     task "frontendTask" {
       driver = "docker"
+      
+      env {
+        DB_SERVER = "${NOMAD_UPSTREAM_ADDR_mongodb}"
+      }
 
       config {
-        image = "registry.gitlab.com/public-projects3/web-blog-demo:876ec7bf"
+        image = "registry.gitlab.com/public-projects3/web-blog-demo:nomad-latest"
       }
 
     //   resources {

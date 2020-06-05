@@ -8,15 +8,17 @@ class Database(object):
     env = Env()
     # Read .env into os.environ
     env.read_env()
-    SERVER = env('DB_SERVER')
+    # SERVER = env('DB_SERVER')
+    SERVER = os.environ['DB_SERVER']
+    print(f'This is the DB Server: {SERVER}')
     PORT = env('DB_PORT')
     VAULT_URL = env('VAULT_URL')
     # Uncomment USER and PASSWORD below to grab creds from .env file
-    # USER = env('DB_USER')
-    # PASSWORD = env('DB_PASSWORD')
+    USER = env('DB_USER')
+    PASSWORD = env('DB_PASSWORD')
     # Uncomment USER and PASSWORD below to show Vault's functionality
-    USER = None
-    PASSWORD = None
+    # USER = None
+    # PASSWORD = None
     URI = ''
     DATABASE = None
 
@@ -54,8 +56,8 @@ class Database(object):
         # print('Initializing Database using Static Injected Secrets from Vault')
         # Database.buildURI_Injected_StaticKVsecrets()
         # Uncomment the 2 lines below to show Vault grabbing Dynamic secrets by utilizing an injected Vault token by the K8s injector
-        print('Initializing Database using Dynamic Secrets from Vault')
-        Database.buildURI_Injected_DynamicSecrets()
+        # print('Initializing Database using Dynamic Secrets from Vault')
+        # Database.buildURI_Injected_DynamicSecrets()
         Database.URI = f'mongodb://{Database.USER}:{Database.PASSWORD}@{Database.SERVER}:{Database.PORT}'
         print(f'Server: {Database.SERVER} and PORT: {Database.PORT} and user: {Database.USER} and password: {Database.PASSWORD}')
         client = pymongo.MongoClient(Database.URI)
