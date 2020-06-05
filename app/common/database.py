@@ -44,7 +44,7 @@ class Database(object):
 
     @staticmethod
     def buildURI_Injected_DynamicSecrets():
-        with open("/app/secrets/token") as f: 
+        with open("/secrets/vault_token") as f: 
             VAULT_TOKEN = f.readlines()
             VAULT_TOKEN = VAULT_TOKEN[0].strip('\n')
         print(f'Vault token = {VAULT_TOKEN}')
