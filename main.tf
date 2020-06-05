@@ -13,6 +13,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 provider "google" {
+  version = "= 2.5.1"
   project = var.gcp_project
   region  = var.gcp_region
 }
@@ -21,16 +22,28 @@ terraform {
   # The modules used in this example have been updated with 0.12 syntax, which means the example is no longer
   # compatible with any versions below 0.12.
   required_version = ">= 0.12"
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "HashiCorp-Sam"
+
+    workspaces {
+      name = "terraform-google-nomad"
+    }
+  }
+  
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY THE NOMAD SERVER NODES
 # Note that we use the consul-cluster module to deploy both the Nomad and Consul nodes on the same servers
 # ---------------------------------------------------------------------------------------------------------------------
-module "consul" {
-  source  = "app.terraform.io/HashiCorp-Sam/consul/google"
-  version = "0.4.0"
-  
+// module "consul" {
+//   source  = "app.terraform.io/HashiCorp-Sam/consul/google"
+//   version = "0.4.0"
+module "nomad_and_consul_servers" {
+  source = "git::git@github.com:hashicorp/terraform-google-consul.git//modules/consul-cluster?ref=v0.4.0"
+  // source = "./modules/nomad-cluster"
+
   gcp_project_id = var.gcp_project
   gcp_region = var.gcp_region
 
