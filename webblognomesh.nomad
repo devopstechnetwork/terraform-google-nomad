@@ -50,12 +50,13 @@ job "webblognomesh" {
       
       env {
         DB_SERVER = "${NOMAD_IP_mongoTask_mongo}"
+        DB_PORT = "${NOMAD_PORT_mongoTask_mongo}"
       }
 
       config {
         image = "samgabrail/webblog-nomad-demo:latest"
         port_map {
-          http = 80
+          http = 8001
         }
       }
 

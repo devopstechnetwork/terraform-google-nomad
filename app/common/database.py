@@ -11,7 +11,8 @@ class Database(object):
     # SERVER = env('DB_SERVER')
     SERVER = os.environ['DB_SERVER']
     print(f'This is the DB Server: {SERVER}')
-    PORT = env('DB_PORT')
+    # PORT = env('DB_PORT')
+    PORT = os.environ['DB_PORT']
     VAULT_URL = env('VAULT_URL')
     # Uncomment USER and PASSWORD below to grab creds from .env file
     # USER = env('DB_USER')
