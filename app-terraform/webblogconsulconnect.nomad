@@ -36,7 +36,7 @@ job "webblogconsulconnect" {
       }
       template {
           data = <<EOH
-        # Using this template to set the root password for the MongoDB
+        # Using this template to set the root password for the MongoDB as env variables to initiate the MongoDB container
         MONGO_INITDB_ROOT_USERNAME="{{with secret "internal/data/webblog/mongodb"}}{{.Data.data.username}}{{end}}"
         MONGO_INITDB_ROOT_PASSWORD="{{with secret "internal/data/webblog/mongodb"}}{{.Data.data.password}}{{end}}"
         EOH
@@ -44,11 +44,6 @@ job "webblogconsulconnect" {
           destination = "secrets/file.env"
           env         = true
         }
-
-      // env = {
-      //   "MONGO_INITDB_ROOT_USERNAME" = "root",
-      //   "MONGO_INITDB_ROOT_PASSWORD" = "GGhJxUpAB23"
-      // }
 
       config {
         image = "mongo:4.2.7"
