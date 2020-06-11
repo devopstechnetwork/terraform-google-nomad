@@ -60,17 +60,22 @@ job "webblogconsulconnect" {
     }
   }
   group "webblogfrontendgroup" {
+    count = 2
     network {
       mode = "bridge"
-      port "http" {
-        static = 8080
-        to = 8001
-      }
+      // port "http" {
+      //   static = 8002
+      //   to = 8001
+      // }
     }
 
     service {
-      name = "frontend"
+      name = "pythonfrontend"
       port = "8001"
+      tags = [
+          "traefik.tags=service",
+          "traefik.frontend.rule=PathPrefixStrip:/",
+        ]
 
       connect {
         sidecar_service {
@@ -86,7 +91,7 @@ job "webblogconsulconnect" {
     }
 
     task "frontendtask" {
-      driver = "docker"
+      driver = "docker"  
       
       env {
         DB_SERVER = "${NOMAD_UPSTREAM_IP_mongodb}"
