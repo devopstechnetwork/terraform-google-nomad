@@ -63,19 +63,19 @@ job "webblogconsulconnect" {
     count = 2
     network {
       mode = "bridge"
-      // port "http" {
-      //   static = 8002
-      //   to = 8001
-      // }
+      port "http" {
+        static = 8002
+        to = 8001
+      }
     }
 
     service {
       name = "pythonfrontend"
       port = "8001"
-      tags = [
-          "traefik.tags=service",
-          "traefik.frontend.rule=PathPrefixStrip:/",
-        ]
+      // tags = [
+      //     "traefik.tags=service",
+      //     "traefik.frontend.rule=PathPrefixStrip:/",
+      //   ]
 
       connect {
         sidecar_service {
