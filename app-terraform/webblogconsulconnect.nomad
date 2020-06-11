@@ -65,12 +65,15 @@ job "webblogconsulconnect" {
       //   }
       // }
 
+      vault {
+        policies = ["webblog"]
+      }
            
 
     }
   }
   group "webblogfrontendgroup" {
-    count = 2
+    count = 1
     network {
       mode = "bridge"
       port "http" {
