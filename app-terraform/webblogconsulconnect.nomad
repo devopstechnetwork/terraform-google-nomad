@@ -36,7 +36,7 @@ job "webblogconsulconnect" {
       }
 
       env = {
-        "MONGO_INITDB_ROOT_USERNAME" = "root",
+        "MONGO_INITDB_ROOT_USERNAME" = var.mongo_username,
         "MONGO_INITDB_ROOT_PASSWORD" = "GGhJxUpAB23"
       }
 
