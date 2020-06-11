@@ -34,11 +34,21 @@ job "webblogconsulconnect" {
         destination = "/data/db"
         read_only   = false
       }
+      template {
+          data = <<EOH
+        # Using this template to set the root password for the MongoDB
+        MONGO_INITDB_ROOT_USERNAME="{{with secret "internal/data/webblog/mongodb"}}{{.Data.data.username}}{{end}}"
+        MONGO_INITDB_ROOT_PASSWORD="{{with secret "internal/data/webblog/mongodb"}}{{.Data.data.password}}{{end}}"
+        EOH
 
-      env = {
-        "MONGO_INITDB_ROOT_USERNAME" = var.mongo_username,
-        "MONGO_INITDB_ROOT_PASSWORD" = "GGhJxUpAB23"
-      }
+          destination = "secrets/file.env"
+          env         = true
+        }
+
+      // env = {
+      //   "MONGO_INITDB_ROOT_USERNAME" = "root",
+      //   "MONGO_INITDB_ROOT_PASSWORD" = "GGhJxUpAB23"
+      // }
 
       config {
         image = "mongo:4.2.7"

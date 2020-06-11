@@ -3,7 +3,7 @@ provider "nomad" {
 }
 
 // resource "nomad_job" "traefik" {
-//   jobspec = "${file("${path.module}/webblogtraefik.nomad")}"
+//   jobspec = file("${path.module}/webblogtraefik.nomad")
 // }
 
 resource "nomad_job" "webblogconsulconnect" {
