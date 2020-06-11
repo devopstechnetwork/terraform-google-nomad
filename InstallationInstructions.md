@@ -14,7 +14,7 @@ https://www.nomadproject.io/docs/integrations/consul-connect/
 
 ## Things needed that are not included in this deployment
 - Docker installed on all client nodes to show up as a docker driver in Nomad
-- Consul Servers and Consul Clients need to both have the following in the consul config:
+- Consul Servers and Consul Clients need to both have the following in the consul config under `/opt/consul/config/default.json`:
 
 ```json
   "connect": {
@@ -32,7 +32,7 @@ sudo mkdir -p /opt/cni/bin
 sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
 ```
 
-- Nomad Servers need a Vault config. I used the root vault token for ease:
+- Nomad Servers need a Vault config in `/opt/nomad/config/default.json`. I used the root vault token for ease:
 ```shell
 vault {
   enabled = true
@@ -49,7 +49,7 @@ vault {
 }
 ```
 
-- Pay attention to extra firewall ports that will need to be opened in GCP. Below is a list for applications specifically
+- Pay attention to extra firewall ports in GCP that will need to be opened in GCP. Below is a list for applications specifically
 tcp:8080
 tcp:9002
 tcp:8000
@@ -60,14 +60,3 @@ tcp:27017 to allow mongodb to be accessed by Vault
 Good guide:
 https://learn.hashicorp.com/nomad/managing-jobs/inspecting-state
 
-sudo docker run --rm -d -e MONGODB_USERNAME=sam -e MONGODB_ROOT_PASSWORD=abcd1234 -e MONGODB_PASSWORD=abcd1234 -e MONGODB_DATABASE=webblog -v /opt/mongodb/data:/bitnami/mongodb bitnami/mongodb:4.2.3-debian-10-r10
-
-sudo docker run --rm -d -e MONGODB_USERNAME=sam -e MONGODB_ROOT_PASSWORD=abcd1234 -e MONGODB_PASSWORD=abcd1234 -e MONGODB_DATABASE=webblog bitnami/mongodb:4.2.3-debian-10-r10
-
-sudo docker run --rm -it -e MONGODB_USERNAME=sam -e MONGODB_ROOT_PASSWORD=abcd1234 -e MONGODB_PASSWORD=abcd1234 -e MONGODB_DATABASE=webblog -v /home/sam/mongodb:/bitnami/mongodb bitnami/mongodb:3.6-debian-10
-
-sudo docker run --rm -d -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=abcd1234 -v /home/sam/mongodb:/data/db mongo
-
-
-
-mongo --host "127.0.0.1" --port "27017" --authenticationDatabase admin -u root -p 
