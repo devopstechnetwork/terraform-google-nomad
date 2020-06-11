@@ -50,10 +50,17 @@ vault {
 ```
 
 - Pay attention to extra firewall ports in GCP that will need to be opened in GCP. Below is a list for applications specifically
+
 tcp:8080
+tcp:8081
 tcp:9002
 tcp:8000
 tcp:27017 to allow mongodb to be accessed by Vault
+tcp:8001
+tcp:8002
+tcp:8003
+tcp:8004
+tcp:8005
 
 ## Troubleshooting
 
