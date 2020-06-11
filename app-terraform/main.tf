@@ -7,5 +7,5 @@ provider "nomad" {
 // }
 
 resource "nomad_job" "webblogconsulconnect" {
-  jobspec = "${file("${path.module}/webblogconsulconnect.nomad")}"
+  jobspec = file("${path.module}/webblogconsulconnect.nomad")
 }
