@@ -72,7 +72,7 @@ job "webblogconsulconnect" {
     network {
       mode = "bridge"
       port "http" {
-        static = 8100
+        static = 8200
         to = 8001
       }
     }
