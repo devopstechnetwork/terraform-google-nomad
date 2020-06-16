@@ -6,6 +6,6 @@ provider "nomad" {
 //   jobspec = file("${path.module}/webblogtraefik.nomad")
 // }
 
-resource "nomad_job" "webblogconsulconnect" {
-  jobspec = file("${path.module}/webblogconsulconnect.nomad")
-}
+// resource "nomad_job" "webblogconsulconnect" {
+//   jobspec = file("${path.module}/webblogconsulconnect.nomad")
+// }
