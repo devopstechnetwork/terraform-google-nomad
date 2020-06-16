@@ -25,6 +25,25 @@ https://www.nomadproject.io/docs/integrations/consul-connect/
   },
 ```
 
+- Consul clients and servers need the following acl stanza to enable acls:
+in JSON:
+```json  
+  "acl": {
+    "enabled": true,
+    "default_policy": "deny",
+    "enable_token_persistence": true
+    }
+```
+in HCL:
+```
+acl = {
+  enabled = true
+  default_policy = "deny"
+  enable_token_persistence = true
+}
+```
+
+
 - Nomad needs CNI plugins, use the below to install it:
 ```shell
 curl -L -o cni-plugins.tgz https://github.com/containernetworking/plugins/releases/download/v0.8.4/cni-plugins-linux-amd64-v0.8.4.tgz
