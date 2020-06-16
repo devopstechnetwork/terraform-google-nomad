@@ -14,6 +14,7 @@ job "webblogconsulconnect" {
     service {
         name = "mongodb"
         port = "27017"
+        token = "26e99a93-cc1c-52e3-1c85-ef94538a26d3"
 
         connect{
         sidecar_service {}
@@ -80,6 +81,7 @@ job "webblogconsulconnect" {
     service {
       name = "pythonfrontend"
       port = "8001"
+      token = "3014a441-a2dd-7b47-6258-b42e821dc7f8"
       // tags = [
       //     "traefik.tags=service",
       //     "traefik.frontend.rule=PathPrefixStrip:/",
