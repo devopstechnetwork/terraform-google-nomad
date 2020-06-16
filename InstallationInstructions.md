@@ -55,15 +55,15 @@ acl {
   enabled = true
 }
 ```
-This guide helps to create a specific policy for an app developer to deploy jobs. I use this with Terraform. You can find the tokens in 1password under webblog-nomad secret
+This guide helps to create a specific policy for an app developer to deploy jobs. I tried this with Terraform, but didn't work because I believe Terraform is doing accessing other end points so it's easier to use a manager token. However, below are the steps if you want to create policies for app developers. You can find the tokens in 1password under webblog-nomad secret
 https://learn.hashicorp.com/nomad/acls/create_policy
 
 Here are the steps:
 1. Save the policy below to a file called `app-dev.policy.hcl` I commented out the capabilities and replaced `police = read` with `policy = write` because I don't konw what Terraform is doing exactly as the TF apply was failing do to permission issues and I didn't have the time to figure out which capabilites are needed so I put `write` as a coarse-grained 
 ```shell
 namespace "default" {
-  policy = "write"
-  #capabilities = ["submit-job","dispatch-job","read-logs"]
+  policy = "read"
+  capabilities = ["submit-job","dispatch-job","read-logs"]
 }
 ```
 
