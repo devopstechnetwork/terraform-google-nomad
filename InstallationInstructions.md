@@ -49,6 +49,34 @@ vault {
 }
 ```
 
+- Nomad servers and clients need to have the acl stanza and a few other things according to https://learn.hashicorp.com/nomad/acls/bootstrap
+```shell
+acl {
+  enabled = true
+}
+```
+This guide helps to create a specific policy for an app developer to deploy jobs. I use this with Terraform. You can find the tokens in 1password under webblog-nomad secret
+https://learn.hashicorp.com/nomad/acls/create_policy
+
+Here are the steps:
+1. Save the policy below to a file called `app-dev.policy.hcl`
+```shell
+namespace "default" {
+  policy = "read"
+  capabilities = ["submit-job","dispatch-job","read-logs"]
+}
+```
+
+2. Apply the policy
+```shell
+nomad acl policy apply -description "Application Developer policy" app-dev app-dev.policy.hcl
+```
+
+3. Create the token
+```shell
+nomad acl token create -name="Test app-dev token" -policy=app-dev -type=client | tee app-dev.token
+```
+
 - Pay attention to extra firewall ports in GCP that will need to be opened in GCP. Below is a list for applications specifically
 
 tcp:8080
