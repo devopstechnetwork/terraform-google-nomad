@@ -59,11 +59,11 @@ This guide helps to create a specific policy for an app developer to deploy jobs
 https://learn.hashicorp.com/nomad/acls/create_policy
 
 Here are the steps:
-1. Save the policy below to a file called `app-dev.policy.hcl`
+1. Save the policy below to a file called `app-dev.policy.hcl` I commented out the capabilities and replaced `police = read` with `policy = write` because I don't konw what Terraform is doing exactly as the TF apply was failing do to permission issues and I didn't have the time to figure out which capabilites are needed so I put `write` as a coarse-grained 
 ```shell
 namespace "default" {
-  policy = "read"
-  capabilities = ["submit-job","dispatch-job","read-logs"]
+  policy = "write"
+  #capabilities = ["submit-job","dispatch-job","read-logs"]
 }
 ```
 
