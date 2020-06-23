@@ -70,10 +70,6 @@ job "webblogconsulconnect" {
     service {
       name = "pythonfrontend"
       port = "8001"
-      // tags = [
-      //     "traefik.tags=service",
-      //     "traefik.frontend.rule=PathPrefixStrip:/",
-      //   ]
 
       connect {
         sidecar_service {
