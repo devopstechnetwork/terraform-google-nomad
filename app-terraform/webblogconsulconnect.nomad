@@ -47,18 +47,8 @@ job "webblogconsulconnect" {
 
       config {
         image = "mongo:4.2.7"
-        // port_map {
-        //   mongo = 27017
-        // }
       }
 
-      // resources {
-      //   network {
-      //     port "mongo" {
-      //       static = 27017
-      //     }
-      //   }
-      // }
 
       vault {
         policies = ["webblog"]
@@ -108,9 +98,7 @@ job "webblogconsulconnect" {
 
       config {
         image = "samgabrail/webblog-nomad-demo:latest"
-        // port_map {
-        //   http = 80
-        // }
+
       }
 
       vault {
