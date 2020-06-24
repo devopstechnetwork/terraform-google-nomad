@@ -2,7 +2,7 @@
 
 1. Create packer images by following instructions in [examples/nomad-consul-image](https://github.com/samgabrail/terraform-google-nomad/tree/master/examples/nomad-consul-image)
 2. Use Terraform to deploy Consul and Nomad in the same cluster by following instructions in [examples/root-example](https://github.com/samgabrail/terraform-google-nomad/tree/master/examples/root-example)
-3. Import the consul-gcp module into TFC and reference that in the `main.tf` file
+
 
 # Additional Notes
 
@@ -11,6 +11,14 @@ https://play.instruqt.com/hashicorp/tracks/nomad-consul-connect
 
 The link below is very important to set up Nomad with Consul Connect
 https://www.nomadproject.io/docs/integrations/consul-connect/
+
+## How to access a remote Nomad cluster:
+You need to define the following env variables:
+```shell
+export NOMAD_ADDR=https://remote-address:4646
+# You need this if you're using ACls in the Nomad cluster
+export NOMAD_TOKEN=<token>
+```
 
 ## Things needed that are not included in this deployment
 - Docker installed on all client nodes to show up as a docker driver in Nomad
@@ -25,7 +33,7 @@ https://www.nomadproject.io/docs/integrations/consul-connect/
   },
 ```
 
-- Consul clients and servers need the following acl stanza to enable acls:
+- Consul clients and servers need the following acl stanza to enable acls good guide: https://learn.hashicorp.com/consul/security-networking/production-acls#apply-individual-tokens-to-the-services:
 in JSON:
 ```json  
   "acl": {
@@ -42,6 +50,7 @@ acl = {
   enable_token_persistence = true
 }
 ```
+
 
 
 - Nomad needs CNI plugins, use the below to install it:
@@ -95,6 +104,9 @@ nomad acl policy apply -description "Application Developer policy" app-dev app-d
 ```shell
 nomad acl token create -name="Test app-dev token" -policy=app-dev -type=client | tee app-dev.token
 ```
+
+- This is a good guide to follow for Consul ACLs to work with Nomad...Note that for Consul Connect you need to explicitly define Intentions when Consul ACLs are enabled. Otherwise services don't talk to each other.
+https://learn.hashicorp.com/nomad/consul-integration/nomad-connect-acl
 
 - Pay attention to extra firewall ports in GCP that will need to be opened in GCP. Below is a list for applications specifically
 
