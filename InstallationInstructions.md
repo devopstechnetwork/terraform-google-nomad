@@ -60,6 +60,19 @@ sudo mkdir -p /opt/cni/bin
 sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
 ```
 
+- Nomad Host Volumes:
+Nomad host volumes can manage storage for stateful workloads running inside a Nomad cluster. In my app, I used host volumes as per this guide. Nomad also supports Container Storage Interface (CSI), however, it's currently in Beta as of the time of writing this blog post. The configuration needed on the Nomad client for enabling a host volume is found below:
+
+```shell
+client {
+  enabled = true
+  host_volume "mongodb" {
+    path      = "/opt/mongodb/data"
+    read_only = false
+  }
+}
+```
+
 - Nomad Servers need a Vault config in `/opt/nomad/config/default.json`. I used the root vault token for ease:
 ```shell
 vault {
@@ -125,7 +138,7 @@ tcp:8005
 Good guide:
 https://learn.hashicorp.com/nomad/managing-jobs/inspecting-state
 
-## Nomad Server Config File
+## Nomad Client Config File
 sam@samg-nomad-client-cluster-zndq:/opt/nomad/config$ cat default.hcl
 datacenter = "us-central1-f"
 name       = "samg-nomad-client-cluster-zndq"
@@ -160,7 +173,7 @@ acl {
   enabled = true
 }
 
-## Consul Server Config File
+## Consul Client Config File
 
 sam@samg-nomad-client-cluster-zndq:/opt/consul/config$ cat default.json
 {
@@ -172,6 +185,77 @@ sam@samg-nomad-client-cluster-zndq:/opt/consul/config$ cat default.json
   "node_name": "samg-nomad-client-cluster-zndq",
   "retry_join": ["provider=gce project_name=sam-gabrail-gcp-demos tag_value=samg-nomad-server-cluster"],
   "server": false,
+  "autopilot": {
+  "cleanup_dead_servers": true,
+  "last_contact_threshold": "200ms",
+  "max_trailing_logs": 250,
+  "server_stabilization_time": "10s",
+  "redundancy_zone_tag": "az",
+  "disable_upgrade_migration": false,
+  "upgrade_version_tag": ""
+},
+  "ui": true,
+  "connect": {
+	  "enabled": true
+  },
+  "ports": {
+	  "grpc": 8502
+  },
+
+  "raft_protocol": 3,
+  "acl": {
+    "enabled": true,
+    "default_policy": "deny",
+    "enable_token_persistence": true
+    }
+}
+
+## Nomad Server Config File
+
+sam@samg-nomad-server-cluster-41g9:/opt/nomad/config$ cat default.hcl
+datacenter = "us-central1-f"
+name       = "samg-nomad-server-cluster-41g9"
+region     = "us-central1"
+bind_addr  = "0.0.0.0"
+
+advertise {
+  http = "10.128.0.16"
+  rpc  = "10.128.0.16"
+  serf = "10.128.0.16"
+}
+
+server {
+  enabled = true
+  bootstrap_expect = 1
+}
+
+consul {
+  address = "127.0.0.1:8500"
+  token   = "XXXXX"
+}
+
+vault {
+  enabled = true
+  address = "http://vault.hashidemos.tekanaid.com:8200"
+  token = "XXXXX"
+}
+
+acl {
+  enabled = true
+}
+
+## Consul Server Config File
+
+sam@samg-nomad-server-cluster-41g9:/opt/consul/config$ cat default.json
+{
+  "advertise_addr": "10.128.0.16",
+  "bind_addr": "10.128.0.16",
+  "bootstrap_expect": 1,
+  "client_addr": "0.0.0.0",
+  "datacenter": "us-central1",
+  "node_name": "samg-nomad-server-cluster-41g9",
+  "retry_join": ["provider=gce project_name=sam-gabrail-gcp-demos tag_value=samg-nomad-server-cluster"],
+  "server": true,
   "autopilot": {
   "cleanup_dead_servers": true,
   "last_contact_threshold": "200ms",
