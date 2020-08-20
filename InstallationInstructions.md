@@ -161,7 +161,7 @@ client {
 
 consul {
   address = "127.0.0.1:8500"
-  token   = "5b998ee9-3c47-a97e-4652-a397364482bc"
+  token   = "xxxxxx"
 }
 
 vault {
