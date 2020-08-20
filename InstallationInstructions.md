@@ -87,11 +87,10 @@ This guide helps to create a specific policy for an app developer to deploy jobs
 https://learn.hashicorp.com/nomad/acls/create_policy
 
 Here are the steps:
-1. Save the policy below to a file called `app-dev.policy.hcl` I commented out the capabilities and replaced `police = read` with `policy = write` because I don't konw what Terraform is doing exactly as the TF apply was failing do to permission issues and I didn't have the time to figure out which capabilites are needed so I put `write` as a coarse-grained 
+1. Save the policy below to a file called `app-dev.policy.hcl` I commented out the capabilities and replaced `policy = read` with `policy = write` because I don't konw what Terraform is doing exactly as the TF apply was failing do to permission issues and I didn't have the time to figure out which capabilites are needed so I put `write` as a coarse-grained 
 ```shell
 namespace "default" {
-  policy = "read"
-  capabilities = ["submit-job","dispatch-job","read-logs"]
+  policy = "write"
 }
 ```
 
@@ -126,3 +125,74 @@ tcp:8005
 Good guide:
 https://learn.hashicorp.com/nomad/managing-jobs/inspecting-state
 
+## Nomad Server Config File
+sam@samg-nomad-client-cluster-zndq:/opt/nomad/config$ cat default.hcl
+datacenter = "us-central1-f"
+name       = "samg-nomad-client-cluster-zndq"
+region     = "us-central1"
+bind_addr  = "0.0.0.0"
+
+advertise {
+  http = "10.128.0.17"
+  rpc  = "10.128.0.17"
+  serf = "10.128.0.17"
+}
+
+client {
+  enabled = true
+  host_volume "mongodb" {
+    path      = "/opt/mongodb/data"
+    read_only = false
+  }
+}
+
+consul {
+  address = "127.0.0.1:8500"
+  token   = "5b998ee9-3c47-a97e-4652-a397364482bc"
+}
+
+vault {
+  enabled = true
+  address = "http://vault.hashidemos.tekanaid.com:8200"
+}
+
+acl {
+  enabled = true
+}
+
+## Consul Server Config File
+
+sam@samg-nomad-client-cluster-zndq:/opt/consul/config$ cat default.json
+{
+  "advertise_addr": "10.128.0.17",
+  "bind_addr": "10.128.0.17",
+
+  "client_addr": "0.0.0.0",
+  "datacenter": "us-central1",
+  "node_name": "samg-nomad-client-cluster-zndq",
+  "retry_join": ["provider=gce project_name=sam-gabrail-gcp-demos tag_value=samg-nomad-server-cluster"],
+  "server": false,
+  "autopilot": {
+  "cleanup_dead_servers": true,
+  "last_contact_threshold": "200ms",
+  "max_trailing_logs": 250,
+  "server_stabilization_time": "10s",
+  "redundancy_zone_tag": "az",
+  "disable_upgrade_migration": false,
+  "upgrade_version_tag": ""
+},
+  "ui": true,
+  "connect": {
+	  "enabled": true
+  },
+  "ports": {
+	  "grpc": 8502
+  },
+
+  "raft_protocol": 3,
+  "acl": {
+    "enabled": true,
+    "default_policy": "deny",
+    "enable_token_persistence": true
+    }
+}
